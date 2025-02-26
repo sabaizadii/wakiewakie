@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { TimePicker } from "@/components/TimePicker";
+import { TimeInput } from "@/components/TimeInput";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const Index = () => {
       <Card className="glass-effect w-full max-w-md p-6 space-y-6">
         <div className="space-y-4">
           <h2 className="text-xl font-semibold text-center text-primary">What time do you want to wake up?</h2>
-          <TimePicker value={wakeUpTime} onChange={setWakeUpTime} />
+          <TimeInput value={wakeUpTime} onChange={setWakeUpTime} />
           <Button
             className="w-full hover-effect"
             onClick={handleCalculateBedtime}
