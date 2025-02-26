@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
+import { Moon, Sun } from "lucide-react";
 
 interface TimeInputProps {
   value: string;
@@ -53,7 +54,7 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
   };
 
   return (
-    <div className="flex items-center justify-center gap-4">
+    <div className="flex items-center justify-center gap-6">
       <div className="flex items-center gap-2">
         <Input
           type="text"
@@ -71,8 +72,8 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
           maxLength={2}
         />
       </div>
-      <div className="flex items-center gap-2">
-        <span className="text-sm text-muted-foreground">AM</span>
+      <div className="relative flex items-center gap-3 bg-purple-900/20 px-4 py-2 rounded-full transition-all duration-300">
+        <Sun className={`w-4 h-4 transition-all duration-300 ${period === "AM" ? "text-yellow-400" : "text-muted-foreground/50"}`} />
         <Switch
           checked={period === "PM"}
           onCheckedChange={(checked) => {
@@ -80,8 +81,9 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
             setPeriod(newPeriod);
             handleTimeChange(hours, minutes, newPeriod);
           }}
+          className="data-[state=checked]:bg-purple-700"
         />
-        <span className="text-sm text-muted-foreground">PM</span>
+        <Moon className={`w-4 h-4 transition-all duration-300 ${period === "PM" ? "text-purple-300" : "text-muted-foreground/50"}`} />
       </div>
     </div>
   );
