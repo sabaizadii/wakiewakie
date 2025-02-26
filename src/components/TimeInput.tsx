@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 
 interface TimeInputProps {
   value: string;
@@ -53,45 +53,35 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <Input
-        type="text"
-        value={hours}
-        onChange={handleHoursChange}
-        className="w-16 text-center text-lg"
-        maxLength={2}
-      />
-      <span className="text-lg">:</span>
-      <Input
-        type="text"
-        value={minutes}
-        onChange={handleMinutesChange}
-        className="w-16 text-center text-lg"
-        maxLength={2}
-      />
-      <div className="flex gap-2">
-        <Button
-          type="button"
-          variant={period === "AM" ? "default" : "outline"}
-          onClick={() => {
-            setPeriod("AM");
-            handleTimeChange(hours, minutes, "AM");
+    <div className="flex items-center justify-center gap-4">
+      <div className="flex items-center gap-2">
+        <Input
+          type="text"
+          value={hours}
+          onChange={handleHoursChange}
+          className="w-16 text-center text-lg"
+          maxLength={2}
+        />
+        <span className="text-lg">:</span>
+        <Input
+          type="text"
+          value={minutes}
+          onChange={handleMinutesChange}
+          className="w-16 text-center text-lg"
+          maxLength={2}
+        />
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-muted-foreground">AM</span>
+        <Switch
+          checked={period === "PM"}
+          onCheckedChange={(checked) => {
+            const newPeriod = checked ? "PM" : "AM";
+            setPeriod(newPeriod);
+            handleTimeChange(hours, minutes, newPeriod);
           }}
-          className="w-14"
-        >
-          AM
-        </Button>
-        <Button
-          type="button"
-          variant={period === "PM" ? "default" : "outline"}
-          onClick={() => {
-            setPeriod("PM");
-            handleTimeChange(hours, minutes, "PM");
-          }}
-          className="w-14"
-        >
-          PM
-        </Button>
+        />
+        <span className="text-sm text-muted-foreground">PM</span>
       </div>
     </div>
   );
