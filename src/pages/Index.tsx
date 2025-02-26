@@ -1,11 +1,51 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Moon, Sun } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { TimePicker } from "@/components/TimePicker";
 
 const Index = () => {
+  const navigate = useNavigate();
+  const [wakeUpTime, setWakeUpTime] = useState<string>("07:00");
+
+  const handleCalculateBedtime = () => {
+    navigate(`/bedtime?wakeup=${wakeUpTime}`);
+  };
+
+  const handleCalculateWakeup = () => {
+    navigate("/wakeup");
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 space-y-8 animate-fade-in">
+      <img src="/logo.png" alt="Sleep Calculator Logo" className="w-24 h-24 mb-8" />
+      
+      <Card className="glass-effect w-full max-w-md p-6 space-y-6">
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold text-center text-primary">What time do you want to wake up?</h2>
+          <TimePicker value={wakeUpTime} onChange={setWakeUpTime} />
+          <Button
+            className="w-full hover-effect"
+            onClick={handleCalculateBedtime}
+          >
+            <Moon className="mr-2 h-5 w-5" />
+            Calculate bedtime
+          </Button>
+        </div>
+      </Card>
+
+      <div className="w-full max-w-md space-y-4">
+        <p className="text-center text-muted-foreground">If you want to go to bed now...</p>
+        <Button
+          variant="secondary"
+          className="w-full hover-effect"
+          onClick={handleCalculateWakeup}
+        >
+          <Sun className="mr-2 h-5 w-5" />
+          Calculate wake-up time
+        </Button>
       </div>
     </div>
   );
