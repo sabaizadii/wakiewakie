@@ -11,7 +11,11 @@ const Wakeup = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 space-y-8 animate-fade-in">
-      <img src="/logo.png" alt="Sleep Calculator Logo" className="w-24 h-24 mb-4" />
+      <img 
+        src="/lovable-uploads/c5460fd1-acb0-433d-b7f4-6ddaaf4e6d40.png" 
+        alt="Sleep Calculator Logo" 
+        className="w-32 h-32 mb-4"
+      />
       
       <Card className="glass-effect w-full max-w-md p-6 space-y-6">
         <h1 className="text-2xl font-semibold text-center text-primary">Wake-up time</h1>
