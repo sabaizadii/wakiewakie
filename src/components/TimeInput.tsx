@@ -72,7 +72,10 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
           maxLength={2}
         />
       </div>
-      <div className="relative flex items-center gap-3 bg-purple-900/20 px-4 py-2 rounded-full transition-all duration-300">
+      <div className="relative flex items-center gap-3 bg-yellow-500/20 px-4 py-2 rounded-full transition-all duration-300">
+        <span className={`text-sm mr-1 font-medium transition-all duration-300 ${period === "AM" ? "text-yellow-400" : "text-muted-foreground/50"}`}>
+          AM
+        </span>
         <Sun className={`w-4 h-4 transition-all duration-300 ${period === "AM" ? "text-yellow-400" : "text-muted-foreground/50"}`} />
         <Switch
           checked={period === "PM"}
@@ -81,9 +84,12 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
             setPeriod(newPeriod);
             handleTimeChange(hours, minutes, newPeriod);
           }}
-          className="data-[state=checked]:bg-purple-700"
+          className="data-[state=checked]:bg-purple-700 data-[state=unchecked]:bg-yellow-400"
         />
         <Moon className={`w-4 h-4 transition-all duration-300 ${period === "PM" ? "text-purple-300" : "text-muted-foreground/50"}`} />
+        <span className={`text-sm ml-1 font-medium transition-all duration-300 ${period === "PM" ? "text-purple-300" : "text-muted-foreground/50"}`}>
+          PM
+        </span>
       </div>
     </div>
   );
