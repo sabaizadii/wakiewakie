@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Moon, Sun } from "lucide-react";
 
 interface TimeInputProps {
   value: string;
@@ -76,7 +75,6 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
         <span className={`text-sm mr-1 font-medium transition-all duration-300 ${period === "AM" ? "text-yellow-400" : "text-muted-foreground/50"}`}>
           AM
         </span>
-        <Sun className={`w-4 h-4 transition-all duration-300 ${period === "AM" ? "text-yellow-400" : "text-muted-foreground/50"}`} />
         <Switch
           checked={period === "PM"}
           onCheckedChange={(checked) => {
@@ -86,7 +84,6 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
           }}
           className="data-[state=checked]:bg-purple-700 data-[state=unchecked]:bg-yellow-400"
         />
-        <Moon className={`w-4 h-4 transition-all duration-300 ${period === "PM" ? "text-purple-300" : "text-muted-foreground/50"}`} />
         <span className={`text-sm ml-1 font-medium transition-all duration-300 ${period === "PM" ? "text-purple-300" : "text-muted-foreground/50"}`}>
           PM
         </span>
