@@ -19,12 +19,16 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 space-y-8 animate-fade-in">
-      <img 
-        src="/lovable-uploads/c5460fd1-acb0-433d-b7f4-6ddaaf4e6d40.png" 
-        alt="Sleep Calculator Logo" 
-        className="w-32 h-32 mb-8"
-      />
+    <div className="min-h-screen flex flex-col items-center justify-center p-6 space-y-6 animate-fade-in">
+      <div className="flex flex-col items-center space-y-2">
+        <img 
+          src="/lovable-uploads/c5460fd1-acb0-433d-b7f4-6ddaaf4e6d40.png" 
+          alt="Sleep Calculator Logo" 
+          className="w-32 h-32"
+        />
+        <h1 className="text-3xl font-bold text-primary mt-2">Wakie-Wakie</h1>
+        <p className="text-xl text-muted-foreground">Sleep Calculator</p>
+      </div>
       
       <Card className="glass-effect w-full max-w-md p-6 space-y-6">
         <div className="space-y-4">

@@ -60,15 +60,15 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
           type="text"
           value={hours}
           onChange={handleHoursChange}
-          className="w-16 text-center text-lg"
+          className="w-16 text-center text-xl font-bold"
           maxLength={2}
         />
-        <span className="text-lg">:</span>
+        <span className="text-2xl font-bold">:</span>
         <Input
           type="text"
           value={minutes}
           onChange={handleMinutesChange}
-          className="w-16 text-center text-lg"
+          className="w-16 text-center text-xl font-bold"
           maxLength={2}
         />
       </div>
