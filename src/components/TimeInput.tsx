@@ -1,7 +1,9 @@
 
 import { useState, useEffect } from "react";
-import { Input } from "@/components/ui/input";
+import TimePicker from "react-time-picker";
+import "react-time-picker/dist/TimePicker.css";
 import { Switch } from "@/components/ui/switch";
+import "../styles/timepicker-custom.css";
 
 interface TimeInputProps {
   value: string;
@@ -9,8 +11,7 @@ interface TimeInputProps {
 }
 
 export const TimeInput = ({ value, onChange }: TimeInputProps) => {
-  const [hours, setHours] = useState("07");
-  const [minutes, setMinutes] = useState("00");
+  const [time, setTime] = useState<string | null>("07:00");
   const [period, setPeriod] = useState<"AM" | "PM">("AM");
 
   useEffect(() => {
@@ -23,104 +24,57 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
       
       const hours24 = date.getHours();
       const hours12 = hours24 % 12 || 12;
-      setHours(String(hours12).padStart(2, "0"));
-      setMinutes(date.getMinutes().toString().padStart(2, "0"));
+      const minutes = date.getMinutes();
+      
+      setTime(`${hours12.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`);
       setPeriod(hours24 >= 12 ? "PM" : "AM");
     } catch (e) {
       console.error("Error parsing time value:", e);
     }
   }, [value]);
 
-  const handleTimeChange = (newHours: string, newMinutes: string, newPeriod: "AM" | "PM") => {
-    let hours24 = parseInt(newHours) || 0;
-    if (newPeriod === "PM" && hours24 !== 12) hours24 += 12;
-    if (newPeriod === "AM" && hours24 === 12) hours24 = 0;
-    const timeString = `${hours24.toString().padStart(2, "0")}:${newMinutes}`;
+  const handleTimeChange = (newTime: string | null) => {
+    if (!newTime) return;
+    
+    setTime(newTime);
+    
+    // Convert to 24-hour format for parent component
+    const [hours, minutes] = newTime.split(':').map(Number);
+    let hours24 = hours;
+    
+    if (period === "PM" && hours !== 12) hours24 += 12;
+    if (period === "AM" && hours === 12) hours24 = 0;
+    
+    const timeString = `${hours24.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
     onChange(timeString);
   };
 
-  const handleHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value.replace(/\D/g, "");
-    if (val === "") val = "12";
-    let num = parseInt(val);
-    if (num === 0) num = 12;
-    if (num > 12) num = 12;
-    const newHours = num.toString().padStart(2, "0");
-    setHours(newHours);
-    handleTimeChange(newHours, minutes, period);
-  };
-
-  const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value.replace(/\D/g, "");
-    if (val === "") val = "00";
-    let num = parseInt(val);
-    if (num > 59) num = 59;
-    const newMinutes = num.toString().padStart(2, "0");
-    setMinutes(newMinutes);
-    handleTimeChange(hours, newMinutes, period);
-  };
-
-  const handleHoursKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Allow for navigation, tab, and delete keys
-    if (["Tab", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Delete"].includes(e.key)) {
-      return;
-    }
+  const handlePeriodChange = (newPeriod: "AM" | "PM") => {
+    setPeriod(newPeriod);
     
-    if (e.key === "Backspace") {
-      e.preventDefault();
-      if (hours === "00" || hours === "") {
-        setHours("12");
-        handleTimeChange("12", minutes, period);
-      } else {
-        const newHours = hours.length === 1 ? "12" : hours.slice(0, -1);
-        setHours(newHours === "" ? "12" : newHours);
-        handleTimeChange(newHours === "" ? "12" : newHours, minutes, period);
-      }
-    }
-  };
-
-  const handleMinutesKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Allow for navigation, tab, and delete keys
-    if (["Tab", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Delete"].includes(e.key)) {
-      return;
-    }
+    if (!time) return;
     
-    if (e.key === "Backspace") {
-      e.preventDefault();
-      if (minutes === "00" || minutes === "") {
-        setMinutes("00");
-        handleTimeChange(hours, "00", period);
-      } else {
-        const newMinutes = minutes.length === 1 ? "00" : minutes.slice(0, -1);
-        setMinutes(newMinutes === "" ? "00" : newMinutes);
-        handleTimeChange(hours, newMinutes === "" ? "00" : newMinutes, period);
-      }
-    }
+    // Convert to 24-hour format with the new period
+    const [hours, minutes] = time.split(':').map(Number);
+    let hours24 = hours;
+    
+    if (newPeriod === "PM" && hours !== 12) hours24 += 12;
+    if (newPeriod === "AM" && hours === 12) hours24 = 0;
+    
+    const timeString = `${hours24.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+    onChange(timeString);
   };
 
   return (
     <div className="flex items-center justify-center gap-6">
-      <div className="flex items-center gap-2">
-        <Input
-          type="text" 
-          value={hours}
-          onChange={handleHoursChange}
-          onKeyDown={handleHoursKeyDown}
-          className="w-16 text-center text-xl font-bold"
-          maxLength={2}
-          inputMode="numeric"
-          pattern="[0-9]*"
-        />
-        <span className="text-2xl font-bold">:</span>
-        <Input
-          type="text"
-          value={minutes}
-          onChange={handleMinutesChange}
-          onKeyDown={handleMinutesKeyDown}
-          className="w-16 text-center text-xl font-bold"
-          maxLength={2}
-          inputMode="numeric"
-          pattern="[0-9]*"
+      <div className="time-picker-container">
+        <TimePicker
+          value={time}
+          onChange={handleTimeChange}
+          disableClock={true}
+          format="h:mm"
+          clearIcon={null}
+          className="custom-time-picker"
         />
       </div>
       <div className="relative flex items-center gap-3 bg-yellow-500/20 px-4 py-2 rounded-full transition-all duration-300">
@@ -131,8 +85,7 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
           checked={period === "PM"}
           onCheckedChange={(checked) => {
             const newPeriod = checked ? "PM" : "AM";
-            setPeriod(newPeriod);
-            handleTimeChange(hours, minutes, newPeriod);
+            handlePeriodChange(newPeriod);
           }}
           className="data-[state=checked]:bg-purple-700 data-[state=unchecked]:bg-yellow-400"
         />
