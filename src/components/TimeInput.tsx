@@ -90,6 +90,8 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
           onKeyDown={handleHoursKeyDown}
           className="w-16 text-center text-xl font-bold"
           maxLength={2}
+          inputMode="numeric" 
+          pattern="[0-9]*"
         />
         <span className="text-2xl font-bold">:</span>
         <Input
@@ -99,6 +101,8 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
           onKeyDown={handleMinutesKeyDown}
           className="w-16 text-center text-xl font-bold"
           maxLength={2}
+          inputMode="numeric"
+          pattern="[0-9]*"
         />
       </div>
       <div className="relative flex items-center gap-3 bg-yellow-500/20 px-4 py-2 rounded-full transition-all duration-300">
