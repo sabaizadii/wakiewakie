@@ -1,53 +1,40 @@
 
-.custom-time-picker .react-time-picker__wrapper {
+.custom-time-input {
+  min-width: 120px;
+  background-color: var(--input);
   border: 1px solid var(--border);
   border-radius: 0.5rem;
-  padding: 0.5rem;
-  background-color: var(--input);
-  color: var(--foreground);
-}
-
-.custom-time-picker .react-time-picker__inputGroup {
-  min-width: 100px;
+  padding: 0.5rem 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.custom-time-picker .react-time-picker__inputGroup__input {
-  color: var(--foreground);
-  background: transparent;
-  font-size: 1.25rem;
-  font-weight: bold;
-  width: 2.5rem !important;
-  height: 2rem;
-  padding: 0;
-  text-align: center;
+.time-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.custom-time-picker .react-time-picker__inputGroup__divider {
+.hours-input,
+.minutes-input {
+  width: 2.5rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  background: transparent;
+  border: none;
+  color: var(--foreground);
+  text-align: center;
+  padding: 0.25rem;
+}
+
+.time-separator {
   color: var(--foreground);
   font-size: 1.5rem;
   font-weight: bold;
-  padding: 0 0.25rem;
+  margin: 0 0.25rem;
 }
 
-.time-picker-container {
-  min-width: 120px;
-}
-
-.custom-time-picker .react-time-picker__button {
-  display: none;
-}
-
-.custom-time-picker .react-time-picker__inputGroup__minute {
-  width: 2.5rem !important;
-}
-
-.custom-time-picker .react-time-picker__inputGroup__hour {
-  width: 2.5rem !important;
-}
-
-.custom-time-picker input:focus {
+.custom-time-input input:focus {
   outline: none;
 }
