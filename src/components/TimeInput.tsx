@@ -52,6 +52,34 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
     handleTimeChange(hours, newMinutes, period);
   };
 
+  const handleHoursKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace") {
+      e.preventDefault();
+      if (hours === "00" || hours === "") {
+        setHours("00");
+        handleTimeChange("00", minutes, period);
+      } else {
+        const newHours = hours.length === 1 ? "00" : hours.slice(0, -1);
+        setHours(newHours);
+        handleTimeChange(newHours, minutes, period);
+      }
+    }
+  };
+
+  const handleMinutesKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace") {
+      e.preventDefault();
+      if (minutes === "00" || minutes === "") {
+        setMinutes("00");
+        handleTimeChange(hours, "00", period);
+      } else {
+        const newMinutes = minutes.length === 1 ? "00" : minutes.slice(0, -1);
+        setMinutes(newMinutes);
+        handleTimeChange(hours, newMinutes, period);
+      }
+    }
+  };
+
   return (
     <div className="flex items-center justify-center gap-6">
       <div className="flex items-center gap-2">
@@ -59,6 +87,7 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
           type="text"
           value={hours}
           onChange={handleHoursChange}
+          onKeyDown={handleHoursKeyDown}
           className="w-16 text-center text-xl font-bold"
           maxLength={2}
         />
@@ -67,6 +96,7 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
           type="text"
           value={minutes}
           onChange={handleMinutesChange}
+          onKeyDown={handleMinutesKeyDown}
           className="w-16 text-center text-xl font-bold"
           maxLength={2}
         />
