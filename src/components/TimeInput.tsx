@@ -15,16 +15,24 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
 
   useEffect(() => {
     // Initialize from value prop
-    const date = new Date(`2000-01-01 ${value}`);
-    const hours24 = date.getHours();
-    const hours12 = hours24 % 12 || 12;
-    setHours(String(hours12).padStart(2, "0"));
-    setMinutes(date.getMinutes().toString().padStart(2, "0"));
-    setPeriod(hours24 >= 12 ? "PM" : "AM");
+    if (!value) return;
+    
+    try {
+      const date = new Date(`2000-01-01 ${value}`);
+      if (isNaN(date.getTime())) return;
+      
+      const hours24 = date.getHours();
+      const hours12 = hours24 % 12 || 12;
+      setHours(String(hours12).padStart(2, "0"));
+      setMinutes(date.getMinutes().toString().padStart(2, "0"));
+      setPeriod(hours24 >= 12 ? "PM" : "AM");
+    } catch (e) {
+      console.error("Error parsing time value:", e);
+    }
   }, [value]);
 
   const handleTimeChange = (newHours: string, newMinutes: string, newPeriod: "AM" | "PM") => {
-    let hours24 = parseInt(newHours);
+    let hours24 = parseInt(newHours) || 0;
     if (newPeriod === "PM" && hours24 !== 12) hours24 += 12;
     if (newPeriod === "AM" && hours24 === 12) hours24 = 0;
     const timeString = `${hours24.toString().padStart(2, "0")}:${newMinutes}`;
@@ -53,20 +61,30 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
   };
 
   const handleHoursKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Allow for navigation, tab, and delete keys
+    if (["Tab", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Delete"].includes(e.key)) {
+      return;
+    }
+    
     if (e.key === "Backspace") {
       e.preventDefault();
       if (hours === "00" || hours === "") {
-        setHours("00");
-        handleTimeChange("00", minutes, period);
+        setHours("12");
+        handleTimeChange("12", minutes, period);
       } else {
-        const newHours = hours.length === 1 ? "00" : hours.slice(0, -1);
-        setHours(newHours);
-        handleTimeChange(newHours, minutes, period);
+        const newHours = hours.length === 1 ? "12" : hours.slice(0, -1);
+        setHours(newHours === "" ? "12" : newHours);
+        handleTimeChange(newHours === "" ? "12" : newHours, minutes, period);
       }
     }
   };
 
   const handleMinutesKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Allow for navigation, tab, and delete keys
+    if (["Tab", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Delete"].includes(e.key)) {
+      return;
+    }
+    
     if (e.key === "Backspace") {
       e.preventDefault();
       if (minutes === "00" || minutes === "") {
@@ -74,8 +92,8 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
         handleTimeChange(hours, "00", period);
       } else {
         const newMinutes = minutes.length === 1 ? "00" : minutes.slice(0, -1);
-        setMinutes(newMinutes);
-        handleTimeChange(hours, newMinutes, period);
+        setMinutes(newMinutes === "" ? "00" : newMinutes);
+        handleTimeChange(hours, newMinutes === "" ? "00" : newMinutes, period);
       }
     }
   };
@@ -84,13 +102,13 @@ export const TimeInput = ({ value, onChange }: TimeInputProps) => {
     <div className="flex items-center justify-center gap-6">
       <div className="flex items-center gap-2">
         <Input
-          type="text"
+          type="text" 
           value={hours}
           onChange={handleHoursChange}
           onKeyDown={handleHoursKeyDown}
           className="w-16 text-center text-xl font-bold"
           maxLength={2}
-          inputMode="numeric" 
+          inputMode="numeric"
           pattern="[0-9]*"
         />
         <span className="text-2xl font-bold">:</span>
